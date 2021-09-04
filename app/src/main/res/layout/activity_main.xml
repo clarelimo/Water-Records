@@ -3,4 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/appNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Water Refill Records"
+        android:layout_marginTop="35dp"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+<!--        android:fontFamily="@font/roboto"-->
+
+<!--        android:textColor="@color/colorTextIcons"-->
+
 </RelativeLayout>
