@@ -12,20 +12,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SalesActivity extends AppCompatActivity {
-    private TextView mShopNameTextView;
-    private ListView mListView;
+    @BindView(R.id.shopNameTextView) TextView mShopNameTextView;
+    @BindView(R.id.listView)  ListView mListView;
     private String[] dates = {"Mon 1st","Tue 2nd", "Wed 3rd", "Thur 4th", "Fri 5th", "Sat 6th", "Sun 7th"};
-
+    private int[] sales = {1000,2000,3000,4000,5000,6000,7000};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
         ButterKnife.bind(this);
 
-        mListView = (ListView) findViewById(R.id.listView);
-        mShopNameTextView = (TextView) findViewById(R.id.shopNameTextView);
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, dates);
+        WaterRefillRecordsArrayAdapter adapter = new WaterRefillRecordsArrayAdapter(this, android.R.layout.simple_list_item_1, dates, sales);
         mListView.setAdapter(adapter);
 
         Intent intent = getIntent();
