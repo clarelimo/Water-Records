@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 
 public class SalesActivity extends AppCompatActivity {
     @BindView(R.id.shopNameTextView)TextView mShopNameTextView;
-    protected String[] daysOfTheWeek = {"Mon 1st","Tue 2nd", "Wed 3rd", "Thur 4th", "Fri 5th", "Sat 6th", "Sun 7th"};
+    protected String[] dates = {"Mon 1st","Tue 2nd", "Wed 3rd", "Thur 4th", "Fri 5th", "Sat 6th", "Sun 7th"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
