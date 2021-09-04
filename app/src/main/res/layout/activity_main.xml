@@ -18,20 +18,11 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
+        android:fontFamily="@font/kaushan_script"
         android:text="Water Refill Records"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorTextIcons" />
-
-    <Button
-        android:id="@+id/findRestaurantsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Get Started"
-        android:textColor="@color/colorTextIcons"
-        android:background="@color/colorAccent"/>
+        android:textStyle="bold" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -43,5 +34,17 @@
         android:padding="5dp"
         android:hint="Enter Shop Name"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/findRestaurantsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Get Started"
+        android:textColor="@color/colorPrimaryText"
+        android:background="@color/colorAccent"/>
+
+
 
 </RelativeLayout>
