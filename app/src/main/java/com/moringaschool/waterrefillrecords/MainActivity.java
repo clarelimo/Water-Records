@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    public static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.getStartedButton) Button mGetStartedButton;
     @BindView(R.id.shopNameEditText) EditText mShopNameEditText;
-    @BindView(R.id.appNameTextView) TextView mAppNameTextView;
 
 
     @Override
@@ -24,14 +24,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mGetStartedButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                String location = mShopNameEditText.getText().toString();
-                Intent intent = new Intent(MainActivity.this, SalesActivity.class);
-                intent.putExtra("shopName", location);
-                startActivity(intent);
-            }
-        });
+        mGetStartedButton.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mGetStartedButton) {
+            String shopName = mShopNameEditText.getText().toString();
+            Intent intent = new Intent(MainActivity.this, SalesActivity.class);
+            intent.putExtra("shopName", shopName);
+            startActivity(intent);
+            Toast.makeText(MainActivity.this, shopName, Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
