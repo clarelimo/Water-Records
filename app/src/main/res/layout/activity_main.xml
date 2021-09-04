@@ -32,42 +32,16 @@
         android:text="Get Started"
         android:textColor="@color/colorTextIcons"
         android:background="@color/colorAccent"/>
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".MainActivity">-->
 
-<!--    <ImageView-->
-<!--        android:id="@+id/imageView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_above="@+id/getStartedButton"-->
-<!--        android:layout_alignTop="@+id/appNameTextView"-->
-<!--        android:scaleType="centerCrop"-->
-<!--        android:src="@drawable/drops" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/appNameTextView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:text="Water Refill Records"-->
-<!--        android:layout_marginTop="35dp"-->
-<!--        android:textSize="30sp"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textColor="@color/colorPrimary"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/getStartedButton"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginBottom="1dp"-->
-<!--        android:background="@color/colorAccent"-->
-<!--        android:text="Get Started"-->
-<!--        android:textColor="@color/colorTextIcons" />-->
-
-
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shopNameEditText"
+        android:background="@color/colorTextIcons"
+        android:layout_above="@+id/findRestaurantsButton"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
+        android:hint="Enter Shop Name"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
