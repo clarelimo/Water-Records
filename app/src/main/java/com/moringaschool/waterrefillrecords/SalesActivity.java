@@ -11,13 +11,16 @@ import butterknife.ButterKnife;
 
 public class SalesActivity extends AppCompatActivity {
     @BindView(R.id.shopNameTextView)TextView mShopNameTextView;
+    protected String[] daysOfTheWeek = {"Mon 1st","Tue 2nd", "Wed 3rd", "Thur 4th", "Fri 5th", "Sat 6th", "Sun 7th"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
         ButterKnife.bind(this);
+
         Intent intent = getIntent();
-        String shop_name = intent.getStringExtra("shop name");
+        String shop_name = intent.getStringExtra("shopName");
         mShopNameTextView.setText("This Week's Sales for: " + shop_name+ " Shop");
     }
 }

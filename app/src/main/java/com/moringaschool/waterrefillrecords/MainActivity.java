@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 String location = mShopNameEditText.getText().toString();
                 Intent intent = new Intent(MainActivity.this, SalesActivity.class);
-                intent.putExtra("shop name", location);
+                intent.putExtra("shopName", location);
                 startActivity(intent);
             }
         });

@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/shopNameEditText"
         android:background="@color/colorTextIcons"
-        android:layout_above="@+id/findRestaurantsButton"
+        android:layout_above="@+id/getStartedButton"
         android:layout_marginBottom="10dp"
         android:padding="5dp"
         android:hint="Enter Shop Name"
