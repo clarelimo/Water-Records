@@ -2,6 +2,7 @@ package com.moringaschool.waterrefillrecords;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,9 +15,10 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String TAG = MainActivity.class.getSimpleName();
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.getStartedButton) Button mGetStartedButton;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.shopNameEditText) EditText mShopNameEditText;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
