@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v == mGetStartedButton) {
             String shopName = mShopNameEditText.getText().toString();
-            Intent intent = new Intent(MainActivity.this, SalesActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.putExtra("shopName", shopName);
             startActivity(intent);
             Toast.makeText(MainActivity.this, shopName, Toast.LENGTH_LONG).show();
