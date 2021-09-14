@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WaterRefillRecords">
         <activity
-            android:name=".LoginActivity"
+            android:name=".SalesActivity"
             android:exported="true" />
         <activity
-            android:name=".SalesActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
