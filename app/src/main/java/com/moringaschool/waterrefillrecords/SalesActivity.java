@@ -54,15 +54,16 @@ public class SalesActivity extends AppCompatActivity {
             public void onResponse(Call<List<Sales>> call, Response<List<Sales>> response) {
                 if(response.isSuccessful()){
                     salesList = response.body();
-
+                    showSales();
                 }else{
-
+                    showUnsuccessfulMessage();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Sales>> call, Throwable t) {
-
+                hideProgressBar();
+                showFailureMessage();
             }
         });
     }
@@ -77,7 +78,7 @@ public class SalesActivity extends AppCompatActivity {
         mErrorTextView.setVisibility(View.VISIBLE);
     }
 
-    private void showRestaurants() {
+    private void showSales() {
         mListView.setVisibility(View.VISIBLE);
     }
 
