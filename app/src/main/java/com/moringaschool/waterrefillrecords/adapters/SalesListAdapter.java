@@ -47,7 +47,6 @@ public class SalesListAdapter extends RecyclerView.Adapter<SalesListAdapter.Sale
     public class SalesViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.amountTextView) TextView mAmountTextView;
         @BindView(R.id.dateTextView) TextView mDateTextView;
-        @BindView(R.id.salesImageView) ImageView msalesImageView;
         private Context mContext;
 
         public SalesViewHolder(View viewItem){

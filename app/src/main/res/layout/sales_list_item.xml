@@ -4,13 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="100dp"
-        android:id="@+id/salesImageView"
-        android:src="@drawable/baseline_price_check_black_18"
-        android:scaleType="centerCrop"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,7 +57,6 @@
                 android:text="Fri 31 10:00am"
                 android:textStyle="italic" />
         </RelativeLayout>
-
     </LinearLayout>
 
 </LinearLayout>

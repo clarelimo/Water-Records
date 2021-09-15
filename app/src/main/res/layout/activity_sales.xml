@@ -10,9 +10,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:text="This Week's Sales for:  "
-        android:textSize="20sp"
-        android:visibility="gone"/>
+        android:text="The Sales Report"
+        android:textSize="20sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
