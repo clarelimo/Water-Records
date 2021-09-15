@@ -8,8 +8,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.moringaschool.waterrefillrecords.api.ApiClient;
+import com.moringaschool.waterrefillrecords.api.ApiInterface;
+import com.moringaschool.waterrefillrecords.modules.Sales;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
 
 public class SalesActivity extends AppCompatActivity {
     @BindView(R.id.shopNameTextView) TextView mShopNameTextView;
@@ -28,5 +35,10 @@ public class SalesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String shop_name = intent.getStringExtra("shopName");
         mShopNameTextView.setText("This Week's Sales for: " + shop_name+ " Shop");
+
+        ApiInterface client = ApiClient.getClient();
+
+        Call<List<Sales>> call = client.getSales();
+
     }
 }
