@@ -14,5 +14,6 @@ public interface ApiInterface {
     @GET("sales")
     Call<List<Sales>> getSales();
 
-
+    @GET("expenses")
+    Call<List<Expenses>> getExpenses();
 }
