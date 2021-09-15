@@ -8,9 +8,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.WaterRefillRecordsArrayAdapter;
+import com.moringaschool.waterrefillrecords.adapters.SalesListAdapter;
 import com.moringaschool.waterrefillrecords.network.ApiClient;
 import com.moringaschool.waterrefillrecords.network.ApiInterface;
 import com.moringaschool.waterrefillrecords.modules.Sales;
@@ -26,25 +29,19 @@ import retrofit2.Response;
 
 public class SalesActivity extends AppCompatActivity {
     @BindView(R.id.shopNameTextView) TextView mShopNameTextView;
-    @BindView(R.id.listView)  ListView mListView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
-//    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+    private SalesListAdapter mAdapter;
 
-    List<Sales> salesList;
-    List<Timestamp> dates;
+    List<Sales> sales;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
         ButterKnife.bind(this);
 
-        WaterRefillRecordsArrayAdapter adapter = new WaterRefillRecordsArrayAdapter(this, android.R.layout.simple_list_item_1, salesList);
-        mListView.setAdapter(adapter);
-
-        Intent intent = getIntent();
-        String shop_name = intent.getStringExtra("shopName");
-        mShopNameTextView.setText("This Week's Sales for: " + shop_name+ " Shop");
+//        WaterRefillRecordsArrayAdapter adapter = new WaterRefillRecordsArrayAdapter(this, android.R.layout.simple_list_item_1, sales);
 
         ApiInterface client = ApiClient.getClient();
 
@@ -54,7 +51,12 @@ public class SalesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Sales>> call, Response<List<Sales>> response) {
                 if(response.isSuccessful()){
-                    salesList = response.body();
+                    sales = response.body();
+                    mAdapter = new SalesListAdapter(sales,SalesActivity.this);
+                    mRecyclerView.setAdapter(mAdapter);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SalesActivity.this);
+                    mRecyclerView.setLayoutManager(layoutManager);
+                    mRecyclerView.setHasFixedSize(true);
                     showSales();
                 }else{
                     showUnsuccessfulMessage();
@@ -80,7 +82,7 @@ public class SalesActivity extends AppCompatActivity {
     }
 
     private void showSales() {
-        mListView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void hideProgressBar() {
