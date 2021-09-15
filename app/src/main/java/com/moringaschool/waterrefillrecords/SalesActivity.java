@@ -12,24 +12,28 @@ import com.moringaschool.waterrefillrecords.api.ApiClient;
 import com.moringaschool.waterrefillrecords.api.ApiInterface;
 import com.moringaschool.waterrefillrecords.modules.Sales;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SalesActivity extends AppCompatActivity {
     @BindView(R.id.shopNameTextView) TextView mShopNameTextView;
     @BindView(R.id.listView)  ListView mListView;
-    private String[] dates = {"Mon 1st","Tue 2nd", "Wed 3rd", "Thur 4th", "Fri 5th", "Sat 6th", "Sun 7th"};
-    private int[] sales = {1000,2000,3000,4000,5000,6000,7000};
+
+    List<Sales> salesList;
+    List<Timestamp> dates;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
         ButterKnife.bind(this);
 
-        WaterRefillRecordsArrayAdapter adapter = new WaterRefillRecordsArrayAdapter(this, android.R.layout.simple_list_item_1, dates, sales);
+        WaterRefillRecordsArrayAdapter adapter = new WaterRefillRecordsArrayAdapter(this, android.R.layout.simple_list_item_1, salesList);
         mListView.setAdapter(adapter);
 
         Intent intent = getIntent();
@@ -39,6 +43,25 @@ public class SalesActivity extends AppCompatActivity {
         ApiInterface client = ApiClient.getClient();
 
         Call<List<Sales>> call = client.getSales();
+
+        call.enqueue(new Callback<List<Sales>>() {
+            @Override
+            public void onResponse(Call<List<Sales>> call, Response<List<Sales>> response) {
+                if(response.isSuccessful()){
+                    salesList = response.body();
+
+                }else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Sales>> call, Throwable t) {
+
+            }
+        });
+
+
 
     }
 }
