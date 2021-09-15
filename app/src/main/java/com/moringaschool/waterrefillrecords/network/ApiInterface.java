@@ -1,6 +1,5 @@
-package com.moringaschool.waterrefillrecords.api;
+package com.moringaschool.waterrefillrecords.network;
 
-import com.moringaschool.waterrefillrecords.SalesActivity;
 import com.moringaschool.waterrefillrecords.modules.Expenses;
 import com.moringaschool.waterrefillrecords.modules.Sales;
 

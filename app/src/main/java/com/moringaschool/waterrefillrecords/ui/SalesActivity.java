@@ -1,17 +1,18 @@
-package com.moringaschool.waterrefillrecords;
+package com.moringaschool.waterrefillrecords.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.moringaschool.waterrefillrecords.api.ApiClient;
-import com.moringaschool.waterrefillrecords.api.ApiInterface;
+import com.moringaschool.waterrefillrecords.R;
+import com.moringaschool.waterrefillrecords.WaterRefillRecordsArrayAdapter;
+import com.moringaschool.waterrefillrecords.network.ApiClient;
+import com.moringaschool.waterrefillrecords.network.ApiInterface;
 import com.moringaschool.waterrefillrecords.modules.Sales;
 
 import java.sql.Timestamp;
