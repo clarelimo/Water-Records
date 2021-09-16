@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.getStartedButton) Button mGetStartedButton;
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.shopNameEditText) EditText mShopNameEditText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +34,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mGetStartedButton) {
-            String shopName = mShopNameEditText.getText().toString();
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.putExtra("shopName", shopName);
             startActivity(intent);
-            Toast.makeText(MainActivity.this, shopName, Toast.LENGTH_LONG).show();
         }
     }
 

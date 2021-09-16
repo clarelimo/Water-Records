@@ -24,17 +24,6 @@
         android:textSize="40sp"
         android:textStyle="bold" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/shopNameEditText"
-        android:background="@color/colorTextIcons"
-        android:layout_above="@+id/getStartedButton"
-        android:layout_marginBottom="10dp"
-        android:padding="5dp"
-        android:hint="Enter Shop Name"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:id="@+id/getStartedButton"
         android:layout_width="match_parent"
@@ -45,6 +34,16 @@
         android:textColor="@color/colorPrimaryText"
         android:background="@color/colorAccent"/>
 
-
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/getStartedButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="78dp"
+        android:layout_marginBottom="285dp"
+        android:fontFamily="@font/kaushan_script"
+        android:text="Where Every Drop Counts!"
+        android:textSize="20sp" />
 
 </RelativeLayout>
