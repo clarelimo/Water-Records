@@ -27,7 +27,7 @@ public class FirebaseSalesViewHolder extends RecyclerView.ViewHolder implements 
 
     public FirebaseSalesViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.mView = itemView;
+        mView = itemView;
         mContext = itemView.getContext();
         itemView.setOnClickListener(this);
     }
@@ -43,7 +43,6 @@ public class FirebaseSalesViewHolder extends RecyclerView.ViewHolder implements 
         balance.setText(sales.getBalance());
         bottlesSold.setText(sales.getEmptyBottlesSold());
         litresSold.setText(sales.getLitresSold());
-
     }
 
     @Override

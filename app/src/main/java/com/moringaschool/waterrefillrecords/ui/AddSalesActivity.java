@@ -72,5 +72,6 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         mSale.setEmptyBottlesSold( Integer.parseInt(bottlesSold));
         mSale.setCashSales(Integer.parseInt(totalSales));
         mSale.setBalance(Integer.parseInt(balance));
+        mSale.setDate(new Timestamp(new Date().getDate()));
     }
 }
