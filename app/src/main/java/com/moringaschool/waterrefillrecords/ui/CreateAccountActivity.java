@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,9 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.passwordEditText) EditText mPasswordEditText;
     @BindView(R.id.confirmPasswordEditText) EditText mConfirmPasswordEditText;
     @BindView(R.id.loginTextView) TextView mLoginTextView;
+    @BindView(R.id.firebaseProgressBar) ProgressBar mSignInProgressBar;
+    @BindView(R.id.loadingTextView) TextView mLoadingSignUp;
+
 
     public static final String TAG = CreateAccountActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
@@ -59,6 +63,17 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    private void showProgressBar() {
+        mSignInProgressBar.setVisibility(View.VISIBLE);
+        mLoadingSignUp.setVisibility(View.VISIBLE);
+        mLoadingSignUp.setText("Sign Up process in Progress");
+    }
+
+    private void hideProgressBar() {
+        mSignInProgressBar.setVisibility(View.GONE);
+        mLoadingSignUp.setVisibility(View.GONE);
+    }
+
     public void createNewUser(){
         final String name = mNameEditText.getText().toString().trim();
         final String shopName = mShopNameEditText.getText().toString().trim();
@@ -71,8 +86,9 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         boolean validPassword = isValidPassword(password, confirmPassword);
 
         if (!validEmail || !validName || !validShopName || !validPassword) return;
-
+        showProgressBar();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            hideProgressBar();
             if (task.isSuccessful()){
                 Log.d(TAG, "Authentication successful");
             }else {

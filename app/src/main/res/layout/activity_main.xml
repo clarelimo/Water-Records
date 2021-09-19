@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Get Started"
+        android:text="Get Sales Records"
         android:textColor="@color/colorPrimaryText"
         android:background="@color/colorAccent"/>
 
