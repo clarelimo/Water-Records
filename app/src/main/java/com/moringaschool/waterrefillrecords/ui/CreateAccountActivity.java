@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,6 +65,12 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         final String email = mEmailEditText.getText().toString().trim();
         final String password = mPasswordEditText.getText().toString().trim();
         final String confirmPassword = mConfirmPasswordEditText.getText().toString().trim();
+        boolean validEmail = isValidEmail(email);
+        boolean validName = isValidName(name);
+        boolean validShopName = isValidShopName(shopName);
+        boolean validPassword = isValidPassword(password, confirmPassword);
+
+        if (!validEmail || !validName || !validShopName || !validPassword) return;
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()){
@@ -72,6 +79,45 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 Toast.makeText(CreateAccountActivity.this,"Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public boolean isValidEmail(String email){
+        boolean isGoodEmail = (email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+        if(!isGoodEmail){
+            mEmailEditText.setError("Please enter a valid email address");
+            return false;
+        }else {
+            return isGoodEmail;
+        }
+    }
+
+    public boolean isValidName(String name){
+        if(name.equals("")){
+            mNameEditText.setError("Please enter your name");
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    public boolean isValidShopName(String shopName){
+        if(shopName.equals("")){
+            mShopNameEditText.setError("Please enter your shop name");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isValidPassword(String password, String confirmPassword){
+        if(password.length() < 6){
+            mPasswordEditText.setError("Please create a password containing at least 6 characters");
+            return false;
+        }else if(!password.equals(confirmPassword)){
+            mPasswordEditText.setError("Passwords do not match!");
+            return false;
+        }else {
+            return true;
+        }
     }
 
     private void createAuthStateListener() {
