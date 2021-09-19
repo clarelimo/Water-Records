@@ -31,10 +31,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if (v == mLoginButton) {
-            Intent intent = new Intent(LoginActivity.this, SalesActivity.class);
-            startActivity(intent);
-        }
+//        if (v == mLoginButton) {
+//            Intent intent = new Intent(LoginActivity.this, SalesActivity.class);
+//            startActivity(intent);
+//        }
 
         if(v == mRegisterTextView){
             Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
