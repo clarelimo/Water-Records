@@ -14,9 +14,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.moringaschool.waterrefillrecords.R;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +41,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     public static final String TAG = CreateAccountActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private String mName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +82,12 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     public void createNewUser(){
         final String name = mNameEditText.getText().toString().trim();
+        mName = mNameEditText.getText().toString().trim();
         final String shopName = mShopNameEditText.getText().toString().trim();
         final String email = mEmailEditText.getText().toString().trim();
         final String password = mPasswordEditText.getText().toString().trim();
         final String confirmPassword = mConfirmPasswordEditText.getText().toString().trim();
+        boolean validmName = isValidName(mName);
         boolean validEmail = isValidEmail(email);
         boolean validName = isValidName(name);
         boolean validShopName = isValidShopName(shopName);
@@ -90,6 +98,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             hideProgressBar();
             if (task.isSuccessful()){
+                createFirebaseUserProfile(Objects.requireNonNull(task.getResult().getUser()));
                 Log.d(TAG, "Authentication successful");
             }else {
                 Toast.makeText(CreateAccountActivity.this,"Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -146,6 +155,23 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 finish();
             }
         };
+    }
+
+    private void createFirebaseUserProfile(final FirebaseUser user){
+        UserProfileChangeRequest addProfileName = new UserProfileChangeRequest.Builder()
+                .setDisplayName(mName)
+                .build();
+
+        user.updateProfile(addProfileName)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, Objects.requireNonNull(user.getDisplayName()));
+                            Toast.makeText(CreateAccountActivity.this, "The display name has ben set", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     @Override
