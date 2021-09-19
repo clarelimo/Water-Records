@@ -27,6 +27,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.passwordEditText) EditText mPasswordEditText;
     @BindView(R.id.confirmPasswordEditText) EditText mConfirmPasswordEditText;
     @BindView(R.id.loginTextView) TextView mLoginTextView;
+
     public static final String TAG = CreateAccountActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -37,8 +38,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_create_account);
         ButterKnife.bind(this);
 
+        mAuth = FirebaseAuth.getInstance();
         mLoginTextView.setOnClickListener(this);
         mCreateUserButton.setOnClickListener(this);
+        createAuthStateListener();
     }
 
     @Override
@@ -62,30 +65,38 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         final String password = mPasswordEditText.getText().toString().trim();
         final String confirmPassword = mConfirmPasswordEditText.getText().toString().trim();
 
-        mAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this,task -> {
-                    if(task.isSuccessful()){
-                        Log.d(TAG, "Authentication successfull");
-                    }else {
-                        Toast.makeText(CreateAccountActivity.this,"Authentication failed.", Toast.LENGTH_LONG).show();
-                    }
-                });
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()){
+                Log.d(TAG, "Authentication successful");
+            }else {
+                Toast.makeText(CreateAccountActivity.this,"Authentication failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void createAuthStateListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                final FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                }
+        mAuthListener = firebaseAuth -> {
+            final FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null){
+                Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
             }
-
         };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }
