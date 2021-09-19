@@ -51,24 +51,32 @@
         android:id="@+id/addSalesPageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/getStartedButton"
+        android:layout_above="@id/saveSaleButton"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
         android:background="@color/colorAccent"
         android:text="Add Sales"
         android:textColor="@color/colorTextIcons"
         android:visibility="visible" />
 
     <Button
+        android:id="@+id/getStartedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Sales"
-        android:id="@+id/getStartedButton"
-        android:background="@color/colorAccent"
-        android:textColor="@color/colorTextIcons"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:text="View Sales"
+        android:textColor="@color/colorTextIcons"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/saveSaleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/getStartedButton"
+        android:layout_alignParentEnd="true"
+        android:text="Saved Sales" />
+
 </RelativeLayout>
