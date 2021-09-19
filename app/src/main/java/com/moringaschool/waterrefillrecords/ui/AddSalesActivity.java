@@ -18,6 +18,9 @@ import com.moringaschool.waterrefillrecords.Constants;
 import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.modules.Sales;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -63,7 +66,8 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         String bottlesSold = mBottlesSold.getText().toString().trim();
         String totalSales = mTotalSales.getText().toString().trim();
         String balance = mBalance.getText().toString().trim();
-        mSale= new Sales( Integer.parseInt(totalSales), Integer.parseInt(liresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
+
+        mSale= new Sales(new Timestamp(new Date().getDate()), Integer.parseInt(totalSales), Integer.parseInt(liresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
         mSale.setLitresSold(Integer.parseInt(liresSold));
         mSale.setEmptyBottlesSold( Integer.parseInt(bottlesSold));
         mSale.setCashSales(Integer.parseInt(totalSales));
