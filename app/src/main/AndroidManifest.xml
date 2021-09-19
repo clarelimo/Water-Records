@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WaterRefillRecords">
         <activity
+            android:name=".ui.SaleDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.AddSalesActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.CreateAccountActivity"
             android:exported="true" />
         <activity
@@ -25,14 +31,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.moringaschool.waterrefillrecords.ui.MainActivity" />
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"
