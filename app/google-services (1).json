@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "749037930929",
+    "project_id": "waterrefillrecords",
+    "storage_bucket": "waterrefillrecords.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749037930929:android:42b731919ab5d234981590",
+        "android_client_info": {
+          "package_name": "com.moringaschool.waterrefillrecords"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749037930929-sl72f2elokfves10lj5ht2bpqsqi0s78.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moringaschool.waterrefillrecords",
+            "certificate_hash": "be5bffb61b1ccc5852de40cad7eecc91685f313d"
+          }
+        },
+        {
+          "client_id": "749037930929-pt7pehcaitkgau1qaqqe9t8511fih3i3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_y9JnUDk2nz7NEzXVvTRmzzJoaOtW9pA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749037930929-pt7pehcaitkgau1qaqqe9t8511fih3i3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
