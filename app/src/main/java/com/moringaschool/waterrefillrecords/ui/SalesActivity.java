@@ -41,8 +41,6 @@ public class SalesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sales);
         ButterKnife.bind(this);
 
-//        WaterRefillRecordsArrayAdapter adapter = new WaterRefillRecordsArrayAdapter(this, android.R.layout.simple_list_item_1, sales);
-
         ApiInterface client = ApiClient.getClient();
 
         Call<List<Sales>> call = client.getSales();

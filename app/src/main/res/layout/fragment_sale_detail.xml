@@ -60,37 +60,37 @@
                 android:paddingRight="30dp">
 
                 <TextView
-                    android:id="@+id/websiteTextView"
+                    android:id="@+id/balanceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawablePadding="4dp"
                     android:gravity="center"
-                    android:text="Cash Sales"
+                    android:text="Total Sales"
                     android:textColor="@color/colorTextIcons"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/phoneTextView"
+                    android:id="@+id/litresSoldTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawablePadding="4dp"
                     android:gravity="center"
-                    android:text="Mpesa Sales"
+                    android:text="Litres Sold"
                     android:textColor="@color/colorTextIcons"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/addressTextView"
+                    android:id="@+id/bottlesSoldTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawablePadding="4dp"
                     android:gravity="center_vertical"
-                    android:text="Number of litres Sold"
+                    android:text="Bottles Sold"
                     android:textColor="@color/colorTextIcons"
                     android:textSize="15sp"
                     android:textStyle="bold" />
