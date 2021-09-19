@@ -24,15 +24,16 @@
         android:textSize="40sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/getStartedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Get Sales Records"
-        android:textColor="@color/colorPrimaryText"
-        android:background="@color/colorAccent"/>
+<!--    <Button-->
+<!--        android:id="@+id/getStartedButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@+id/addSalesPageButton"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:background="@color/colorAccent"-->
+<!--        android:text="Get Sales Records"-->
+<!--        android:textColor="@color/colorPrimaryText" />-->
 
     <TextView
         android:id="@+id/textView"
@@ -46,4 +47,28 @@
         android:text="Where Every Drop Counts!"
         android:textSize="20sp" />
 
+    <Button
+        android:id="@+id/addSalesPageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/getStartedButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorAccent"
+        android:text="Add Sales"
+        android:textColor="@color/colorTextIcons"
+        android:visibility="visible" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Sales"
+        android:id="@+id/getStartedButton"
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorTextIcons"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 </RelativeLayout>

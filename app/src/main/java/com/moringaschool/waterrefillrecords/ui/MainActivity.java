@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String TAG = MainActivity.class.getSimpleName();
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.getStartedButton) Button mGetStartedButton;
+    @BindView(R.id.addSalesPageButton) Button mAddSalesButton;
     @SuppressLint("NonConstantResourceId")
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -48,12 +49,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         mGetStartedButton.setOnClickListener(this);
+        mAddSalesButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v == mGetStartedButton) {
             Intent intent = new Intent(MainActivity.this, SalesActivity.class);
+            startActivity(intent);
+        }
+        if(v == mAddSalesButton){
+            Intent intent = new Intent(MainActivity.this, AddSalesActivity.class);
             startActivity(intent);
         }
     }

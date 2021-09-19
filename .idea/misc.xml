@@ -8,10 +8,10 @@
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login2.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sale_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sales.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_sale_detail.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_sale_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/sales_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.25" />
       </map>

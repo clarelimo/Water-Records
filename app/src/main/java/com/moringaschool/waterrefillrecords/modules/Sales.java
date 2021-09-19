@@ -26,6 +26,12 @@ public class Sales {
         this.machineImage = machineImage;
     }
 
+    public Sales(int litresSold, int emptyBottlesSold, int balance, int totalSales) {
+        this.totalSales = totalSales;
+        this.litresSold = litresSold;
+        this.emptyBottlesSold = emptyBottlesSold;
+        this.balance = balance;
+    }
     public Timestamp getDate() {
         return date;
     }
