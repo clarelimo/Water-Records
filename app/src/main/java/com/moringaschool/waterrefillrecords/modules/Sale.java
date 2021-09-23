@@ -6,13 +6,15 @@ public class Sale {
     private int emptyBottlesSold;
     private int totalSales;
     private int balance;
+    private String machineImage;
 
-    public Sale(String date, int litresSold, int emptyBottlesSold, int balance, int totalSales) {
+    public Sale(String date, int litresSold, int emptyBottlesSold, int balance, int totalSales, String machineImage) {
         this.totalSales = totalSales;
         this.litresSold = litresSold;
         this.emptyBottlesSold = emptyBottlesSold;
         this.balance = balance;
         this.date = date;
+        this.machineImage = machineImage;
     }
 
     public Sale(){}
@@ -38,6 +40,14 @@ public class Sale {
 
     public void setEmptyBottlesSold(int emptyBottlesSold) {
         this.emptyBottlesSold = emptyBottlesSold;
+    }
+
+    public String getMachineImage() {
+        return machineImage;
+    }
+
+    public void setMachineImage(String machineImage) {
+        this.machineImage = machineImage;
     }
 
     public int getTotalSales() {
