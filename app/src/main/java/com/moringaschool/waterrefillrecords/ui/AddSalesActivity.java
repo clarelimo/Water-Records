@@ -34,6 +34,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     @BindView(R.id.bottlesSold) EditText mBottlesSold;
     @BindView(R.id.totalSales) EditText mTotalSales;
     @BindView(R.id.balance) EditText mBalance;
+    @BindView(R.id.dateEditText) EditText mDate;
     @BindView(R.id.addSalesButton) Button mAddSalesButton;
     private Sale mSale;
 
@@ -67,12 +68,13 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         String bottlesSold = mBottlesSold.getText().toString().trim();
         String totalSales = mTotalSales.getText().toString().trim();
         String balance = mBalance.getText().toString().trim();
+        String date = mDate.getText().toString().trim();
 
-        mSale= new Sale("2021/23/11", Integer.parseInt(totalSales), Integer.parseInt(litresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
+        mSale= new Sale(date, Integer.parseInt(totalSales), Integer.parseInt(litresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
         mSale.setLitresSold(Integer.parseInt(litresSold));
         mSale.setEmptyBottlesSold( Integer.parseInt(bottlesSold));
         mSale.setTotalSales(Integer.parseInt(totalSales));
         mSale.setBalance(Integer.parseInt(balance));
-        mSale.setDate("2021/23/11");
+        mSale.setDate(date);
     }
 }

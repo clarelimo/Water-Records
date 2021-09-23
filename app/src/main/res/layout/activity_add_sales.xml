@@ -18,6 +18,20 @@
         android:id="@+id/linearLayout">
 
         <EditText
+            android:id="@+id/dateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/white"
+            android:hint="Date"
+            android:inputType="datetime"
+            android:nextFocusDown="@+id/totalSales"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/colorDivider"
+            android:textSize="20sp" />
+
+        <EditText
             android:id="@+id/litresSold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
