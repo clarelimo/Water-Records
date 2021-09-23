@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -87,20 +88,20 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(AddSalesActivity.this, "Record Saved", Toast.LENGTH_SHORT).show();
         }
         if(v == mMachineImageBtn){
-
+            onLaunchCamera();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        if (mSource.equals(Constants.SOURCE_SAVED)) {
-            inflater.inflate(R.menu.menu_photo, menu);
-        } else {
-            inflater.inflate(R.menu.menu_main, menu);
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        if (mSource.equals(Constants.SOURCE_SAVED)) {
+//            inflater.inflate(R.menu.menu_photo, menu);
+//        } else {
+//            inflater.inflate(R.menu.menu_main, menu);
+//        }
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     private void createNewSale() {
         String litresSold = mlitresSold.getText().toString().trim();
@@ -117,16 +118,16 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         mSale.setDate(date);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_photo:
-                onLaunchCamera();
-            default:
-                break;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_photo:
+//                onLaunchCamera();
+//            default:
+//                break;
+//        }
+//        return false;
+//    }
 
     private void onLaunchCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -148,7 +149,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
 
     //On camera Icon Clicked
     public void askCameraPermissions(){
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             onLaunchCamera();
         } else {
             // let's request permission.getContext(),getContext(),
