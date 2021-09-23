@@ -59,7 +59,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sales);
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
         ButterKnife.bind(this);
 
         mSharedPreferences = getSharedPreferences(Constants.PREFERENCES_SALES_KEY, Context.MODE_PRIVATE);
@@ -82,15 +82,15 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
         if (mSource.equals(Constants.SOURCE_SAVED)) {
             inflater.inflate(R.menu.menu_photo, menu);
         } else {
             inflater.inflate(R.menu.menu_main, menu);
         }
+        return super.onCreateOptionsMenu(menu);
     }
-
 
     private void createNewSale() {
         String litresSold = mlitresSold.getText().toString().trim();
