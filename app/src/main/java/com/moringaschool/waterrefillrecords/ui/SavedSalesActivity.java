@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,80 +15,68 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.moringaschool.waterrefillrecords.Constants;
 import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.adapters.FirebaseSalesViewHolder;
+import com.moringaschool.waterrefillrecords.adapters.SavedSalesAdapter;
+import com.moringaschool.waterrefillrecords.modules.Sale;
 import com.moringaschool.waterrefillrecords.modules.Sales;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SavedSalesActivity extends AppCompatActivity {
     private DatabaseReference mSalesReference;
-    private FirebaseRecyclerAdapter<Sales, FirebaseSalesViewHolder> mFirebaseAdapter;
-
-    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.errorTextView) TextView mErrorTextView;
-    @BindView(R.id.progressBar) ProgressBar mProgressBar;
+    private List<Sale> mSales;
+    private SavedSalesAdapter salesListAdapter;
+    @BindView(R.id.savedRecyclerView) RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sales);
+        setContentView(R.layout.activity_savedsales);
         ButterKnife.bind(this);
-        
+
         mSalesReference = FirebaseDatabase.getInstance().getReference(Constants.PREFERENCES_SALES_KEY);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mSales = new ArrayList<>();
+        salesListAdapter = new SavedSalesAdapter(mSales, this);
+        mRecyclerView.setAdapter(salesListAdapter);
+
         setUpFireBaseAdapter();
-        hideProgressbar();
-        showSales();
-    }
-
-    private void showSales() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressbar() {
-        mProgressBar.setVisibility(View.GONE);
     }
 
     private void setUpFireBaseAdapter() {
-        FirebaseRecyclerOptions<Sales> options = new FirebaseRecyclerOptions.Builder<Sales>()
-                .setQuery(mSalesReference, Sales.class)
-                .build();
-
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Sales, FirebaseSalesViewHolder>(options) {
+        mSalesReference.addValueEventListener(new ValueEventListener() {
             @Override
-            protected void onBindViewHolder(@NonNull FirebaseSalesViewHolder holder, int position, @NonNull Sales model) {
-                holder.bindSales(model);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    mSales.add(dataSnapshot.getValue(Sale.class));
+                }
+
+                for (Sale sale: mSales) {
+                    Log.d("The date is ", "Date: " + sale.getDate());
+                    Log.d("The sales for today ", "Sales: " + sale.getTotalSales()); //log
+                }
+
+                salesListAdapter.notifyDataSetChanged();
+
             }
 
-            @NonNull
             @Override
-            public FirebaseSalesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.sales_list_item, parent, false);
-                return new FirebaseSalesViewHolder(view);
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
-        };
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mFirebaseAdapter);
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mFirebaseAdapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if(mFirebaseAdapter!= null) {
-            mFirebaseAdapter.stopListening();
-        }
+        });
     }
 }
