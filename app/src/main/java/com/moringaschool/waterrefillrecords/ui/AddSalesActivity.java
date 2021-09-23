@@ -13,12 +13,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.moringaschool.waterrefillrecords.Constants;
@@ -35,6 +39,7 @@ import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.modules.Sale;
 import com.moringaschool.waterrefillrecords.modules.Sales;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -64,6 +69,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     EditText mDate;
     @BindView(R.id.addSalesButton)
     Button mAddSalesButton;
+    @BindView(R.id.machineImageView) ImageView imageView;
     @BindView(R.id.machineImageBtn) Button mMachineImageBtn;
     private Sale mSale;
 
@@ -98,17 +104,6 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        if (mSource.equals(Constants.SOURCE_SAVED)) {
-//            inflater.inflate(R.menu.menu_photo, menu);
-//        } else {
-//            inflater.inflate(R.menu.menu_main, menu);
-//        }
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
     private void createNewSale() {
         String litresSold = mlitresSold.getText().toString().trim();
         String bottlesSold = mBottlesSold.getText().toString().trim();
@@ -123,17 +118,6 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         mSale.setBalance(Integer.parseInt(balance));
         mSale.setDate(date);
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_photo:
-//                onLaunchCamera();
-//            default:
-//                break;
-//        }
-//        return false;
-//    }
 
     private void onLaunchCamera() {
         Uri photoURI = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName()+".provider",
@@ -151,52 +135,118 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            mImageLabel.setImageBitmap(imageBitmap);
-            //      encodeBitmapAndSaveToFirebase(imageBitmap);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == this.RESULT_OK) {
+            Toast.makeText(this, "Image saved!!", Toast.LENGTH_LONG).show();
+            // For those saving their files in directories private to their apps
+            // addrestaurantPicsToGallery();
+            // Get the dimensions of the View
+            int targetW = imageView.getWidth()/3;
+            int targetH = imageView.getHeight()/2;
+
+            // Get the dimensions of the bitmap
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
+
+            int photoW = bmOptions.outWidth;
+            int photoH = bmOptions.outHeight;
+
+
+            // Alternative way of determining how much to scale down the image. This can be used as the inSampleSize value
+            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+
+            // Decode the image file into a Bitmap sized to fill the View
+
+            bmOptions.inSampleSize = calculateInSampleSize(bmOptions, targetW, targetH);
+            bmOptions.inJustDecodeBounds = false;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
+//            String width = String.valueOf(bitmap.getWidth());
+//            String length = String.valueOf(bitmap.getHeight());
+//            Log.d(width, length);
+            imageView.setImageBitmap(bitmap);
+            uploadImageToFireBase(bitmap);
         }
     }
 
-    //On camera Icon Clicked
-    public void askCameraPermissions(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            onLaunchCamera();
-        } else {
-            // let's request permission.getContext(),getContext(),
-            String[] permissionRequest = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            ActivityCompat.requestPermissions(this,permissionRequest, CAMERA_PERMISSION_REQUEST_CODE);
-        }
-    }
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            // we have heard back from our request for camera and write external storage.
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                onLaunchCamera();
-            } else {
-                Toast.makeText(this, "Camera permission is required to use camera", Toast.LENGTH_LONG).show();
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
             }
         }
+
+        return inSampleSize;
     }
 
-    private File createImageFile()  {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "Restaurant_JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = new File(storageDir,
-                imageFileName
-                        +  ".jpg"
-        );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        // Log.i(TAG, currentPhotoPath);
-        return image;
+    //On camera Icon Clicked
+        public void askCameraPermissions () {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                onLaunchCamera();
+            } else {
+                // let's request permission.getContext(),getContext(),
+                String[] permissionRequest = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                ActivityCompat.requestPermissions(this, permissionRequest, CAMERA_PERMISSION_REQUEST_CODE);
+            }
+        }
+
+        @Override
+        public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions,
+        @NonNull int[] grantResults){
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+                // we have heard back from our request for camera and write external storage.
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    onLaunchCamera();
+                } else {
+                    Toast.makeText(this, "Camera permission is required to use camera", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+        private File createImageFile () {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "Sales_JPEG_" + timeStamp + "_";
+            File storageDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            File image = new File(storageDir,
+                    imageFileName
+                            + ".jpg"
+            );
+
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = image.getAbsolutePath();
+            // Log.i(TAG, currentPhotoPath);
+            return image;
+        }
+
+        public void uploadImageToFireBase(Bitmap bitmap) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+            DatabaseReference ref = FirebaseDatabase.getInstance()
+                    .getReference(Constants.PREFERENCES_SALES_KEY)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("machineImage");
+            ref.setValue(imageEncoded);
+        }
     }
-}

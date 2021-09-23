@@ -87,6 +87,14 @@
         android:textColorHint="@color/colorDivider"
         android:textSize="20sp" />
 
+        <ImageView
+            android:id="@+id/machineImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop">
+        </ImageView>
+
         <Button
             android:id="@+id/machineImageBtn"
             android:layout_width="match_parent"
@@ -96,7 +104,6 @@
             android:background="@color/colorAccent"
             android:layout_marginTop="15dp"
             android:textColor="@color/colorTextIcons" />
-
     <Button
         android:id="@+id/addSalesButton"
         android:layout_width="match_parent"
