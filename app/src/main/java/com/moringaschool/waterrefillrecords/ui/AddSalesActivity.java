@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -32,7 +33,9 @@ import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.modules.Sale;
 import com.moringaschool.waterrefillrecords.modules.Sales;
 
+import java.io.File;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -45,6 +48,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     private static final int REQUEST_IMAGE_CAPTURE = 111;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 11;
     private String mSource;
+    private String currentPhotoPath;
 
     @BindView(R.id.litresSold)
     EditText mlitresSold;
@@ -169,5 +173,22 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, "Camera permission is required to use camera", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private File createImageFile()  {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "Restaurant_JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = new File(storageDir,
+                imageFileName
+                        +  ".jpg"
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        // Log.i(TAG, currentPhotoPath);
+        return image;
     }
 }
