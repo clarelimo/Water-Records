@@ -1,11 +1,17 @@
 package com.moringaschool.waterrefillrecords.ui;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -137,6 +143,30 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 //            mImageLabel.setImageBitmap(imageBitmap);
             //      encodeBitmapAndSaveToFirebase(imageBitmap);
+        }
+    }
+
+    //On camera Icon Clicked
+    public void askCameraPermissions(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            onLaunchCamera();
+        } else {
+            // let's request permission.getContext(),getContext(),
+            String[] permissionRequest = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this,permissionRequest, CAMERA_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            // we have heard back from our request for camera and write external storage.
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                onLaunchCamera();
+            } else {
+                Toast.makeText(this, "Camera permission is required to use camera", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
