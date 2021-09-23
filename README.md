@@ -6,12 +6,13 @@ An Android App used to keep records of a water vending business
 * Clone the repository
 * Build (gradle build)
 * Select  a device to run your app on
-* Run the App 
+* Run the App
 ## Known Bugs
 There are no known bugs.
 ## Technologies Used
 * Java
-* XML
+* Android
+* Firebase
 ## Support and contact details
 Email : clare.limo@student.moringaschool.com
 ### License
