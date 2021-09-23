@@ -2,6 +2,9 @@ package com.moringaschool.waterrefillrecords.adapters;
 
 import com.moringaschool.waterrefillrecords.modules.Sale;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moringaschool.waterrefillrecords.R;
+import com.moringaschool.waterrefillrecords.ui.AddSalesActivity;
+import com.moringaschool.waterrefillrecords.ui.AddSalesActivity_ViewBinding;
 
 import java.util.List;
 
@@ -62,6 +67,10 @@ public class SavedSalesAdapter extends RecyclerView.Adapter<SavedSalesAdapter.Sa
         public void bindSales(Sale sales){
             date.setText(sales.getDate());
             total.setText(Integer.toString(sales.getTotalSales()));
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(sales.getMachineImage(), bmOptions);
+
+            mImageLabel.setImageBitmap(bitmap);
 //            balance.setText(Integer.toString(sales.getBalance()));
 //            litres.setText(Integer.toString(sales.getLitresSold()));
 //            bottles.setText(Integer.toString(sales.getEmptyBottlesSold()));

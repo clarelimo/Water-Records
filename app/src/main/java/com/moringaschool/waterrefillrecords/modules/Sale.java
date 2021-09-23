@@ -8,13 +8,13 @@ public class Sale {
     private int balance;
     private String machineImage;
 
-    public Sale(String date, int litresSold, int emptyBottlesSold, int balance, int totalSales, String machineImage) {
+    public Sale(String date, int litresSold, int emptyBottlesSold, int balance, int totalSales) {
         this.totalSales = totalSales;
         this.litresSold = litresSold;
         this.emptyBottlesSold = emptyBottlesSold;
         this.balance = balance;
         this.date = date;
-        this.machineImage = machineImage;
+//        this.machineImage = machineImage;
     }
 
     public Sale(){}
