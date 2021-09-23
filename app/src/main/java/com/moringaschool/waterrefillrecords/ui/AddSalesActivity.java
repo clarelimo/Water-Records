@@ -51,8 +51,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     EditText mDate;
     @BindView(R.id.addSalesButton)
     Button mAddSalesButton;
-    @BindView(R.id.machineImageView)
-    ImageView mImageLabel;
+    @BindView(R.id.machineImageBtn) Button mMachineImageBtn;
     private Sale mSale;
 
     @Override
@@ -65,6 +64,8 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         mSharedPreferences = getSharedPreferences(Constants.PREFERENCES_SALES_KEY, Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
         mAddSalesButton.setOnClickListener(this);
+        mMachineImageBtn.setOnClickListener(this);
+
     }
 
     @Override
@@ -78,6 +79,9 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(AddSalesActivity.this, SavedSalesActivity.class);
             startActivity(intent);
             Toast.makeText(AddSalesActivity.this, "Record Saved", Toast.LENGTH_SHORT).show();
+        }
+        if(v == mMachineImageBtn){
+
         }
     }
 
@@ -131,7 +135,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mImageLabel.setImageBitmap(imageBitmap);
+//            mImageLabel.setImageBitmap(imageBitmap);
             //      encodeBitmapAndSaveToFirebase(imageBitmap);
         }
     }

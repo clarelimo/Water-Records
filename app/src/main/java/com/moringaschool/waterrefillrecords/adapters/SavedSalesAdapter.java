@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class SavedSalesAdapter extends RecyclerView.Adapter<SavedSalesAdapter.Sa
     public class SavedSalesViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.savedDate) TextView date;
         @BindView(R.id.savedTotalSales) TextView total;
+        @BindView(R.id.machineImageView) ImageView mImageLabel;
 //        @BindView(R.id.savedBalance) TextView balance;
 //        @BindView(R.id.savedLitresSold) TextView litres;
 //        @BindView(R.id.savedBottles) TextView bottles;
