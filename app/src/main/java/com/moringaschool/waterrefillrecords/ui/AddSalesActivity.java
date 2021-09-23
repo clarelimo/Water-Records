@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,20 +33,29 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
 
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
+    private static final int REQUEST_IMAGE_CAPTURE = 111;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 11;
+    private String mSource;
 
-    @BindView(R.id.litresSold) EditText mlitresSold;
-    @BindView(R.id.bottlesSold) EditText mBottlesSold;
-    @BindView(R.id.totalSales) EditText mTotalSales;
-    @BindView(R.id.balance) EditText mBalance;
-    @BindView(R.id.dateEditText) EditText mDate;
-    @BindView(R.id.addSalesButton) Button mAddSalesButton;
+    @BindView(R.id.litresSold)
+    EditText mlitresSold;
+    @BindView(R.id.bottlesSold)
+    EditText mBottlesSold;
+    @BindView(R.id.totalSales)
+    EditText mTotalSales;
+    @BindView(R.id.balance)
+    EditText mBalance;
+    @BindView(R.id.dateEditText)
+    EditText mDate;
+    @BindView(R.id.addSalesButton)
+    Button mAddSalesButton;
     private Sale mSale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sales);
-//        setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         ButterKnife.bind(this);
 
         mSharedPreferences = getSharedPreferences(Constants.PREFERENCES_SALES_KEY, Context.MODE_PRIVATE);
@@ -52,7 +65,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(v == mAddSalesButton){
+        if (v == mAddSalesButton) {
             createNewSale();
             DatabaseReference restaurantRef = FirebaseDatabase
                     .getInstance()
@@ -64,6 +77,17 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu);
+        if (mSource.equals(Constants.SOURCE_SAVED)) {
+            inflater.inflate(R.menu.menu_photo, menu);
+        } else {
+            inflater.inflate(R.menu.menu_main, menu);
+        }
+    }
+
+
     private void createNewSale() {
         String litresSold = mlitresSold.getText().toString().trim();
         String bottlesSold = mBottlesSold.getText().toString().trim();
@@ -71,11 +95,29 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         String balance = mBalance.getText().toString().trim();
         String date = mDate.getText().toString().trim();
 
-        mSale= new Sale(date, Integer.parseInt(totalSales), Integer.parseInt(litresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
+        mSale = new Sale(date, Integer.parseInt(totalSales), Integer.parseInt(litresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
         mSale.setLitresSold(Integer.parseInt(litresSold));
-        mSale.setEmptyBottlesSold( Integer.parseInt(bottlesSold));
+        mSale.setEmptyBottlesSold(Integer.parseInt(bottlesSold));
         mSale.setTotalSales(Integer.parseInt(totalSales));
         mSale.setBalance(Integer.parseInt(balance));
         mSale.setDate(date);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_photo:
+                onLaunchCamera();
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private void onLaunchCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 }
