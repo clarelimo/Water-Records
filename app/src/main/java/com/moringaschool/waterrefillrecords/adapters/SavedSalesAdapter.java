@@ -46,9 +46,9 @@ public class SavedSalesAdapter extends RecyclerView.Adapter<SavedSalesAdapter.Sa
     public class SavedSalesViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.savedDate) TextView date;
         @BindView(R.id.savedTotalSales) TextView total;
-        @BindView(R.id.savedBalance) TextView balance;
-        @BindView(R.id.savedLitresSold) TextView litres;
-        @BindView(R.id.savedBottles) TextView bottles;
+//        @BindView(R.id.savedBalance) TextView balance;
+//        @BindView(R.id.savedLitresSold) TextView litres;
+//        @BindView(R.id.savedBottles) TextView bottles;
         private Context mContext;
 
         public SavedSalesViewHolder(View viewItem){
@@ -60,9 +60,9 @@ public class SavedSalesAdapter extends RecyclerView.Adapter<SavedSalesAdapter.Sa
         public void bindSales(Sale sales){
             date.setText(sales.getDate());
             total.setText(Integer.toString(sales.getTotalSales()));
-            balance.setText(Integer.toString(sales.getBalance()));
-            litres.setText(Integer.toString(sales.getLitresSold()));
-            bottles.setText(Integer.toString(sales.getEmptyBottlesSold()));
+//            balance.setText(Integer.toString(sales.getBalance()));
+//            litres.setText(Integer.toString(sales.getLitresSold()));
+//            bottles.setText(Integer.toString(sales.getEmptyBottlesSold()));
         }
     }
 }
