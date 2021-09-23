@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +51,8 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     EditText mDate;
     @BindView(R.id.addSalesButton)
     Button mAddSalesButton;
+    @BindView(R.id.machineImageView)
+    ImageView mImageLabel;
     private Sale mSale;
 
     @Override
@@ -128,7 +131,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            mImageLabel.setImageBitmap(imageBitmap);
+            mImageLabel.setImageBitmap(imageBitmap);
             //      encodeBitmapAndSaveToFirebase(imageBitmap);
         }
     }

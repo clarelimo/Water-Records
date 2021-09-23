@@ -61,6 +61,15 @@
                 android:text="Fri 31 10:00am"
                 android:textStyle="italic" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/machineImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/machineimage">
+        </ImageView>
     </LinearLayout>
 
 <!--    <LinearLayout-->
