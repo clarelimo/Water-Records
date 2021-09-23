@@ -42,6 +42,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sales);
+//        setHasOptionsMenu(true);
         ButterKnife.bind(this);
 
         mSharedPreferences = getSharedPreferences(Constants.PREFERENCES_SALES_KEY, Context.MODE_PRIVATE);
