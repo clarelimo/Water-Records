@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.moringaschool.waterrefillrecords.Constants;
 import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.adapters.FirebaseSalesViewHolder;
@@ -35,6 +36,7 @@ import butterknife.ButterKnife;
 
 public class SavedSalesActivity extends AppCompatActivity {
     private DatabaseReference mSalesReference;
+    FirebaseStorage mStorage;
     private List<Sale> mSales;
     private SavedSalesAdapter salesListAdapter;
     @BindView(R.id.savedRecyclerView) RecyclerView mRecyclerView;
@@ -48,7 +50,7 @@ public class SavedSalesActivity extends AppCompatActivity {
         mSalesReference = FirebaseDatabase.getInstance().getReference(Constants.PREFERENCES_SALES_KEY);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        mStorage = FirebaseStorage.getInstance();
         mSales = new ArrayList<>();
         salesListAdapter = new SavedSalesAdapter(mSales, this);
         mRecyclerView.setAdapter(salesListAdapter);

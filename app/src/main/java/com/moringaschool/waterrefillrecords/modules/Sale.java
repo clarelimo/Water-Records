@@ -6,7 +6,7 @@ public class Sale {
     private int emptyBottlesSold;
     private int totalSales;
     private int balance;
-    private String machineImage;
+    private String image;
 
     public Sale(String date, int litresSold, int emptyBottlesSold, int balance, int totalSales) {
         this.totalSales = totalSales;
@@ -14,7 +14,15 @@ public class Sale {
         this.emptyBottlesSold = emptyBottlesSold;
         this.balance = balance;
         this.date = date;
-//        this.machineImage = machineImage;
+    }
+
+    public Sale(String date, int litresSold, int emptyBottlesSold, int balance, int totalSales, String image) {
+        this.totalSales = totalSales;
+        this.litresSold = litresSold;
+        this.emptyBottlesSold = emptyBottlesSold;
+        this.balance = balance;
+        this.date = date;
+        this.image = image;
     }
 
     public Sale(){}
@@ -42,12 +50,12 @@ public class Sale {
         this.emptyBottlesSold = emptyBottlesSold;
     }
 
-    public String getMachineImage() {
-        return machineImage;
+    public String getImage() {
+        return image;
     }
 
-    public void setMachineImage(String machineImage) {
-        this.machineImage = machineImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getTotalSales() {
