@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.moringaschool.waterrefillrecords.Constants;
 import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.modules.Sale;
@@ -56,6 +58,11 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 11;
     private String mSource;
     private String currentPhotoPath;
+    FirebaseDatabase mDatabase;
+    DatabaseReference mRef;
+    FirebaseStorage mStorage;
+    Uri imageUri = null;
+    ProgressDialog progressDialog;
 
     @BindView(R.id.litresSold)
     EditText mlitresSold;
@@ -77,13 +84,16 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sales);
-//        setHasOptionsMenu(true);
         ButterKnife.bind(this);
 
         mSharedPreferences = getSharedPreferences(Constants.PREFERENCES_SALES_KEY, Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
-        mAddSalesButton.setOnClickListener(this);
-        mMachineImageBtn.setOnClickListener(this);
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child(Constants.PREFERENCES_SALES_KEY);
+        mStorage = FirebaseStorage.getInstance();
+        progressDialog = new ProgressDialog(this);
+//        mMachineImageBtn.setOnClickListener(this);
 
     }
 
@@ -99,9 +109,6 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
             startActivity(intent);
             Toast.makeText(AddSalesActivity.this, "Record Saved", Toast.LENGTH_SHORT).show();
         }
-        if(v == mMachineImageBtn){
-            onLaunchCamera();
-        }
     }
 
     private void createNewSale() {
@@ -110,6 +117,9 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         String totalSales = mTotalSales.getText().toString().trim();
         String balance = mBalance.getText().toString().trim();
         String date = mDate.getText().toString().trim();
+
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
 
         mSale = new Sale(date, Integer.parseInt(totalSales), Integer.parseInt(litresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
         mSale.setLitresSold(Integer.parseInt(litresSold));
@@ -136,40 +146,12 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == this.RESULT_OK) {
+//            uploadImageToFireBase();
+            imageUri = data.getData();
+            imageView.setImageURI(imageUri);
             Toast.makeText(this, "Image saved!!", Toast.LENGTH_LONG).show();
-            // For those saving their files in directories private to their apps
-            // addrestaurantPicsToGallery();
-            // Get the dimensions of the View
-            int targetW = imageView.getWidth()/3;
-            int targetH = imageView.getHeight()/2;
-
-            // Get the dimensions of the bitmap
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-
-
-            int photoW = bmOptions.outWidth;
-            int photoH = bmOptions.outHeight;
-
-
-            // Alternative way of determining how much to scale down the image. This can be used as the inSampleSize value
-            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-
-            // Decode the image file into a Bitmap sized to fill the View
-
-            bmOptions.inSampleSize = calculateInSampleSize(bmOptions, targetW, targetH);
-            bmOptions.inJustDecodeBounds = false;
-
-            Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-
-//            String width = String.valueOf(bitmap.getWidth());
-//            String length = String.valueOf(bitmap.getHeight());
-//            Log.d(width, length);
-            imageView.setImageBitmap(bitmap);
-            uploadImageToFireBase(bitmap);
         }
+        mAddSalesButton.setOnClickListener(this);
     }
 
     public static int calculateInSampleSize(
