@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,14 +43,9 @@ public class SavedSalesAdapter extends RecyclerView.Adapter<SavedSalesAdapter.Sa
 
     @Override
     public void onBindViewHolder(@NonNull SavedSalesViewHolder holder, int position) {
-        Sale sales = mSales.get(position);
-        holder.date.setText(sales.getDate());
-        holder.total.setText(Integer.toString(sales.getTotalSales()));
-        String imageUrl = sales.getImage();
-        Log.d("images","The image is:" + imageUrl);
-        Log.d("date","The date is:" + sales.getDate());
-        Picasso.get().load(imageUrl).into(holder.mImageLabel);
-//        holder.bindSales(mSales.get(position));
+        Sale sale = mSales.get(position);
+
+        holder.bindSales(mSales.get(position));
     }
 
     @Override
@@ -72,7 +66,10 @@ public class SavedSalesAdapter extends RecyclerView.Adapter<SavedSalesAdapter.Sa
         }
 
         public void bindSales(Sale sales){
-
+            date.setText(sales.getDate());
+            total.setText(Integer.toString(sales.getTotalSales()));
+            String imageUrl = sales.getImage();
+            Picasso.get().load(imageUrl).into(mImageLabel);
         }
     }
 }
