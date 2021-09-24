@@ -32,10 +32,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.moringaschool.waterrefillrecords.Constants;
 import com.moringaschool.waterrefillrecords.R;
 import com.moringaschool.waterrefillrecords.modules.Sale;
@@ -61,7 +66,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     FirebaseDatabase mDatabase;
     DatabaseReference mRef;
     FirebaseStorage mStorage;
-    Uri imageUri = null;
+    Uri imageUrl = null;
     ProgressDialog progressDialog;
 
     @BindView(R.id.litresSold)
@@ -93,7 +98,6 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         mRef = mDatabase.getReference().child(Constants.PREFERENCES_SALES_KEY);
         mStorage = FirebaseStorage.getInstance();
         progressDialog = new ProgressDialog(this);
-//        mMachineImageBtn.setOnClickListener(this);
 
     }
 
@@ -101,12 +105,25 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         if (v == mAddSalesButton) {
             createNewSale();
-            DatabaseReference restaurantRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference(Constants.PREFERENCES_SALES_KEY);
-            restaurantRef.push().setValue(mSale);
-            Intent intent = new Intent(AddSalesActivity.this, SavedSalesActivity.class);
-            startActivity(intent);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+            StorageReference filePath = mStorage.getReference().child("imagePost").child(imageUrl.getLastPathSegment());
+            filePath.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            String t = task.getResult().toString();
+                            DatabaseReference ref = mRef.push();
+                            ref.setValue(mSale);
+                            ref.child("image").setValue(task.getResult().toString());
+                            progressDialog.dismiss();
+                        }
+                    });
+                }
+            });
+
             Toast.makeText(AddSalesActivity.this, "Record Saved", Toast.LENGTH_SHORT).show();
         }
     }
@@ -118,8 +135,6 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         String balance = mBalance.getText().toString().trim();
         String date = mDate.getText().toString().trim();
 
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
 
         mSale = new Sale(date, Integer.parseInt(totalSales), Integer.parseInt(litresSold), Integer.parseInt(bottlesSold), Integer.parseInt(balance));
         mSale.setLitresSold(Integer.parseInt(litresSold));
@@ -147,8 +162,8 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == this.RESULT_OK) {
 //            uploadImageToFireBase();
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
+            imageUrl = data.getData();
+            imageView.setImageURI(imageUrl);
             Toast.makeText(this, "Image saved!!", Toast.LENGTH_LONG).show();
         }
         mAddSalesButton.setOnClickListener(this);
