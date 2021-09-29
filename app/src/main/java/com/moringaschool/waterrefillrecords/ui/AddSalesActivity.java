@@ -59,7 +59,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
 
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
-    private static final int REQUEST_IMAGE_CAPTURE = 111;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int GALLERY_CODE = 71;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 11;
     private String mSource;
@@ -84,6 +84,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
     Button mAddSalesButton;
     @BindView(R.id.machineImageView) ImageView imageView;
     @BindView(R.id.machineImageBtn) Button mMachineImageBtn;
+    @BindView(R.id.takeImageBtn) Button mCaptureBtn;
     private Sale mSale;
 
     @Override
@@ -101,6 +102,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         progressDialog = new ProgressDialog(this);
 
         mMachineImageBtn.setOnClickListener(this);
+        mCaptureBtn.setOnClickListener(this);
 
     }
 
@@ -110,6 +112,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
             createNewSale();
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
+
             StorageReference filePath = mStorage.getReference().child("imagePost").child(imageUrl.getLastPathSegment());
             filePath.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -120,7 +123,7 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
                             String t = task.getResult().toString();
                             DatabaseReference ref = mRef.push();
                             ref.setValue(mSale);
-                            ref.child("image").setValue(task.getResult().toString());
+                            ref.child("image").setValue(t);
                             progressDialog.dismiss();
                         }
                     });
@@ -131,6 +134,10 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if(v == mMachineImageBtn){
+            onUpLoadImage();
+        }
+
+        if(v == mCaptureBtn){
             onLaunchCamera();
         }
     }
@@ -151,10 +158,17 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
         mSale.setDate(date);
     }
 
-    private void onLaunchCamera() {
+    private void onUpLoadImage() {
         Intent takePictureIntent = new Intent(Intent.ACTION_GET_CONTENT);
         takePictureIntent.setType("image/*");
         startActivityForResult(takePictureIntent,GALLERY_CODE);
+    }
+
+    private void onLaunchCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     @Override
@@ -165,6 +179,22 @@ public class AddSalesActivity extends AppCompatActivity implements View.OnClickL
             imageView.setImageURI(imageUrl);
             Toast.makeText(this, "Image saved!!", Toast.LENGTH_LONG).show();
         }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageUrl = getImageUri(imageBitmap);
+            imageView.setImageURI(imageUrl);
+            Toast.makeText(this, "Image saved!!", Toast.LENGTH_LONG).show();
+        }
         mAddSalesButton.setOnClickListener(this);
     }
+
+    public Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
 }
